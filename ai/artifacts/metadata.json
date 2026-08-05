@@ -1,0 +1,79 @@
+{
+  "model_version": "nb-tfidf-v1",
+  "trained_at": "2026-07-06T18:37:39.184136+00:00",
+  "training_rows": 600,
+  "test_size": 0.2,
+  "accuracy": 0.8083333333333333,
+  "classes": [
+    "Critical",
+    "High",
+    "Low",
+    "Medium"
+  ],
+  "classification_report": {
+    "Critical": {
+      "precision": 0.7916666666666666,
+      "recall": 0.7916666666666666,
+      "f1-score": 0.7916666666666666,
+      "support": 24.0
+    },
+    "High": {
+      "precision": 0.8,
+      "recall": 0.6896551724137931,
+      "f1-score": 0.7407407407407407,
+      "support": 29.0
+    },
+    "Low": {
+      "precision": 0.6666666666666666,
+      "recall": 1.0,
+      "f1-score": 0.8,
+      "support": 18.0
+    },
+    "Medium": {
+      "precision": 0.9090909090909091,
+      "recall": 0.8163265306122449,
+      "f1-score": 0.8602150537634409,
+      "support": 49.0
+    },
+    "accuracy": 0.8083333333333333,
+    "macro avg": {
+      "precision": 0.7918560606060606,
+      "recall": 0.8244120924231761,
+      "f1-score": 0.7981556152927121,
+      "support": 120.0
+    },
+    "weighted avg": {
+      "precision": 0.8228787878787879,
+      "recall": 0.8083333333333333,
+      "f1-score": 0.808600159299084,
+      "support": 120.0
+    }
+  },
+  "confusion_matrix": [
+    [
+      19,
+      5,
+      0,
+      0
+    ],
+    [
+      5,
+      20,
+      0,
+      4
+    ],
+    [
+      0,
+      0,
+      18,
+      0
+    ],
+    [
+      0,
+      0,
+      9,
+      40
+    ]
+  ],
+  "data_source": "synthetic_sample (dev/demo mode)"
+}

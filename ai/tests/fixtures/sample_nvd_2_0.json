@@ -1,0 +1,52 @@
+{
+  "vulnerabilities": [
+    {
+      "cve": {
+        "id": "CVE-2023-0001",
+        "descriptions": [
+          {"lang": "en", "value": "A SQL injection vulnerability in the login endpoint allows remote attackers to bypass authentication via crafted email parameter."}
+        ],
+        "metrics": {
+          "cvssMetricV31": [
+            {"cvssData": {"baseScore": 9.8}}
+          ]
+        }
+      }
+    },
+    {
+      "cve": {
+        "id": "CVE-2023-0002",
+        "descriptions": [
+          {"lang": "en", "value": "A reflected cross-site scripting (XSS) vulnerability exists in the search feature allowing script injection into the response page."}
+        ],
+        "metrics": {
+          "cvssMetricV31": [
+            {"cvssData": {"baseScore": 6.1}}
+          ]
+        }
+      }
+    },
+    {
+      "cve": {
+        "id": "CVE-2023-0003",
+        "descriptions": [
+          {"lang": "en", "value": "An information disclosure issue allows local users to read configuration files with sensitive but low-impact data."}
+        ],
+        "metrics": {
+          "cvssMetricV2": [
+            {"cvssData": {"baseScore": 2.1}}
+          ]
+        }
+      }
+    },
+    {
+      "cve": {
+        "id": "CVE-2023-0004",
+        "descriptions": [
+          {"lang": "en", "value": "Missing description case."}
+        ],
+        "metrics": {}
+      }
+    }
+  ]
+}

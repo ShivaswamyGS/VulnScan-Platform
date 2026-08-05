@@ -1,0 +1,72 @@
+# Run the ENTIRE stack (database + backend + AI model + frontend) with:
+#     docker compose up --build
+#
+# First run will take a few minutes (installing Python/Node deps, training
+# a fallback model). Subsequent runs are fast thanks to Docker's layer cache.
+#
+# Then visit:
+#   Frontend:        http://localhost:5173
+#   Backend API docs: http://localhost:8000/docs
+#
+# Copy .env.example to .env first and set a real SECRET_KEY and POSTGRES_PASSWORD.
+
+services:
+  db:
+    image: postgres:16-alpine
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: ${POSTGRES_USER:-vulntriage_user}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-changeme}
+      POSTGRES_DB: ${POSTGRES_DB:-vulntriage}
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER:-vulntriage_user} -d ${POSTGRES_DB:-vulntriage}"]
+      interval: 5s
+      timeout: 5s
+      retries: 15
+    ports:
+      - "5432:5432"
+
+  backend:
+    build:
+      context: .
+      dockerfile: backend/Dockerfile
+    restart: unless-stopped
+    environment:
+      APP_ENV: production
+      DEBUG: "false"
+      SECRET_KEY: ${SECRET_KEY:?SECRET_KEY must be set in .env}
+      DATABASE_URL: postgresql+psycopg2://${POSTGRES_USER:-vulntriage_user}:${POSTGRES_PASSWORD:-changeme}@db:5432/${POSTGRES_DB:-vulntriage}
+      CORS_ORIGINS: '["http://localhost:5173"]'
+      ML_MODEL_PATH: ../ai/artifacts/model.pkl
+      ML_VECTORIZER_PATH: ../ai/artifacts/tfidf.pkl
+      UPLOAD_DIR: /app/uploads
+    depends_on:
+      db:
+        condition: service_healthy
+    volumes:
+      # Named volumes so uploaded attachments and the trained model persist
+      # across `docker compose down` / `up` cycles, not just container restarts.
+      - uploads_data:/app/uploads
+      - ai_artifacts:/app/ai/artifacts
+    ports:
+      - "8000:8000"
+
+  frontend:
+    build:
+      context: ./frontend
+      args:
+        # Must match the backend's exposed host port above — the browser
+        # calls this URL directly, it isn't proxied through Docker's network.
+        VITE_API_BASE_URL: http://localhost:8000/api/v1
+    restart: unless-stopped
+    depends_on:
+      - backend
+    ports:
+      - "5173:80"
+
+volumes:
+  postgres_data:
+  uploads_data:
+  ai_artifacts:

@@ -1,0 +1,30 @@
+{
+  "CVE_Items": [
+    {
+      "cve": {
+        "CVE_data_meta": {"ID": "CVE-2020-0001"},
+        "description": {
+          "description_data": [
+            {"lang": "en", "value": "Buffer overflow in the network parser allows remote code execution via a crafted packet."}
+          ]
+        }
+      },
+      "impact": {
+        "baseMetricV3": {"cvssV3": {"baseScore": 9.0}}
+      }
+    },
+    {
+      "cve": {
+        "CVE_data_meta": {"ID": "CVE-2020-0002"},
+        "description": {
+          "description_data": [
+            {"lang": "en", "value": "Cross-site request forgery (CSRF) in the settings page allows unauthorized state changes."}
+          ]
+        }
+      },
+      "impact": {
+        "baseMetricV2": {"cvssV2": {"baseScore": 5.5}}
+      }
+    }
+  ]
+}
