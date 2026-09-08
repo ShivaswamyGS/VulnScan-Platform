@@ -80,7 +80,32 @@ def remove_stopwords(tokens: list[str]) -> list[str]:
 
 
 def lemmatize(tokens: list[str]) -> list[str]:
-    return [_LEMMATIZER.lemmatize(t) for t in tokens]
+    """
+    Lemmatize normal English words while preserving
+    cybersecurity identifiers and vulnerability terms.
+    """
+    preserved_terms = {
+        "xss",
+        "csrf",
+        "rce",
+        "ssrf",
+        "sqli",
+        "xxe",
+        "dos",
+        "ddos",
+        "cve",
+        "owasp",
+    }
+
+    result = []
+
+    for token in tokens:
+        if token.lower() in preserved_terms:
+            result.append(token.lower())
+        else:
+            result.append(_LEMMATIZER.lemmatize(token))
+
+    return result
 
 
 def preprocess(text: str, *, use_lemmatization: bool = True) -> str:

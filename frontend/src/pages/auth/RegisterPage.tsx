@@ -1,107 +1,157 @@
-import { useState, type FormEvent } from "react";
-import { Link, useNavigate } from "react-router-dom";
-import { ShieldAlert } from "lucide-react";
-import { registerUser } from "../../api/auth";
-import { useAuth } from "../../context/AuthContext";
-import { Button } from "../../components/ui/Button";
-import { FieldWrapper, TextInput } from "../../components/ui/FormField";
-import { Alert } from "../../components/ui/Alert";
-import { getErrorMessage } from "../../api/client";
+import {
+  ShieldCheck,
+  Building2,
+  ArrowRight,
+  CheckCircle2,
+} from "lucide-react";
+import { Link } from "react-router-dom";
 
 export function RegisterPage() {
-  const { login } = useAuth();
-  const navigate = useNavigate();
-
-  const [fullName, setFullName] = useState("");
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-  const [error, setError] = useState<string | null>(null);
-  const [isSubmitting, setIsSubmitting] = useState(false);
-
-  async function handleSubmit(e: FormEvent) {
-    e.preventDefault();
-    setError(null);
-
-    if (password.length < 8) {
-      setError("Password must be at least 8 characters long.");
-      return;
-    }
-
-    setIsSubmitting(true);
-    try {
-      await registerUser({ full_name: fullName, email, password });
-      // Registration succeeded — log the new account in immediately rather
-      // than bouncing them back to a second login form.
-      await login(email, password);
-      navigate("/reports");
-    } catch (err) {
-      setError(getErrorMessage(err));
-    } finally {
-      setIsSubmitting(false);
-    }
-  }
-
   return (
-    <div className="flex min-h-screen items-center justify-center bg-[var(--color-canvas)] px-4">
-      <div className="w-full max-w-sm">
-        <div className="mb-8 flex flex-col items-center gap-2">
-          <div className="flex h-10 w-10 items-center justify-center rounded-[var(--radius-md)] bg-[var(--color-sidebar)]">
-            <ShieldAlert size={20} className="text-[var(--color-accent)]" />
+    <div className="min-h-screen bg-slate-50">
+      <div className="mx-auto flex min-h-screen w-full max-w-6xl items-center justify-center px-6 py-12">
+
+        <div className="w-full max-w-4xl">
+
+          {/* BRAND */}
+          <div className="mb-10 text-center">
+            <div className="mx-auto flex h-12 w-12 items-center justify-center rounded-xl bg-blue-600 text-white shadow-lg shadow-blue-600/20">
+              <ShieldCheck size={24} />
+            </div>
+
+            <h1 className="mt-5 text-3xl font-bold tracking-tight text-slate-900">
+              Create your VulnTriage account
+            </h1>
+
+            <p className="mx-auto mt-2 max-w-xl text-sm text-slate-500">
+              Choose the account type that matches how you will use the
+              vulnerability management platform.
+            </p>
           </div>
-          <h1 className="font-mono text-lg font-semibold text-[var(--color-ink)]">Create your account</h1>
-          <p className="text-sm text-[var(--color-ink-muted)]">For internal security testers</p>
+
+          {/* ACCOUNT TYPES */}
+          <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
+
+            {/* INTERNAL TESTER */}
+            <Link
+              to="/register/tester"
+              className="group rounded-2xl border border-slate-200 bg-white p-7 shadow-sm transition duration-200 hover:-translate-y-1 hover:border-blue-300 hover:shadow-lg"
+            >
+              <div className="flex items-start justify-between">
+
+                <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-blue-50 text-blue-600">
+                  <ShieldCheck size={25} />
+                </div>
+
+                <ArrowRight
+                  size={20}
+                  className="text-slate-300 transition group-hover:translate-x-1 group-hover:text-blue-600"
+                />
+
+              </div>
+
+              <h2 className="mt-6 text-xl font-bold text-slate-900">
+                Internal Security Tester
+              </h2>
+
+              <p className="mt-2 text-sm leading-6 text-slate-500">
+                Register as a security researcher or internal vulnerability
+                tester to discover, submit and track security reports.
+              </p>
+
+              <div className="mt-6 space-y-2.5">
+
+                <Feature text="Submit vulnerability reports" />
+                <Feature text="Participate in bug bounty programs" />
+                <Feature text="Track your submissions" />
+
+              </div>
+
+              <div className="mt-7 rounded-lg bg-blue-50 px-4 py-3 text-center text-sm font-semibold text-blue-700">
+                Register as Tester
+              </div>
+            </Link>
+
+            {/* COMPANY */}
+            <Link
+              to="/company/register"
+              className="group rounded-2xl border border-slate-200 bg-white p-7 shadow-sm transition duration-200 hover:-translate-y-1 hover:border-violet-300 hover:shadow-lg"
+            >
+              <div className="flex items-start justify-between">
+
+                <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-violet-50 text-violet-600">
+                  <Building2 size={25} />
+                </div>
+
+                <ArrowRight
+                  size={20}
+                  className="text-slate-300 transition group-hover:translate-x-1 group-hover:text-violet-600"
+                />
+
+              </div>
+
+              <h2 className="mt-6 text-xl font-bold text-slate-900">
+                Company
+              </h2>
+
+              <p className="mt-2 text-sm leading-6 text-slate-500">
+                Register your organization to manage projects, assets,
+                vulnerability reports and security operations.
+              </p>
+
+              <div className="mt-6 space-y-2.5">
+
+                <Feature text="Manage company projects" />
+                <Feature text="Manage employees and assets" />
+                <Feature text="Monitor vulnerability reports" />
+
+              </div>
+
+              <div className="mt-7 rounded-lg bg-violet-50 px-4 py-3 text-center text-sm font-semibold text-violet-700">
+                Register Company
+              </div>
+            </Link>
+
+          </div>
+
+          {/* ADMIN NOTICE */}
+          <div className="mt-7 rounded-xl border border-slate-200 bg-white px-5 py-4 text-center shadow-sm">
+
+            <p className="text-sm text-slate-600">
+              <span className="font-semibold text-slate-900">
+                Administrator?
+              </span>{" "}
+              Admin accounts are provisioned by the VulnTriage platform and
+              do not use public registration.
+            </p>
+
+          </div>
+
+          {/* LOGIN */}
+          <p className="mt-7 text-center text-sm text-slate-500">
+            Already have an account?{" "}
+            <Link
+              to="/login"
+              className="font-semibold text-blue-600 hover:text-blue-700"
+            >
+              Sign in
+            </Link>
+          </p>
+
         </div>
-
-        <form onSubmit={handleSubmit} className="flex flex-col gap-4 rounded-[var(--radius-lg)] border border-[var(--color-border)] bg-white p-6">
-          {error && <Alert variant="error">{error}</Alert>}
-
-          <FieldWrapper label="Full name" htmlFor="fullName">
-            <TextInput
-              id="fullName"
-              required
-              minLength={2}
-              value={fullName}
-              onChange={(e) => setFullName(e.target.value)}
-              placeholder="Asha Rao"
-            />
-          </FieldWrapper>
-
-          <FieldWrapper label="Email" htmlFor="email">
-            <TextInput
-              id="email"
-              type="email"
-              autoComplete="email"
-              required
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-              placeholder="you@company.com"
-            />
-          </FieldWrapper>
-
-          <FieldWrapper label="Password" htmlFor="password" hint="At least 8 characters.">
-            <TextInput
-              id="password"
-              type="password"
-              autoComplete="new-password"
-              required
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-              placeholder="••••••••"
-            />
-          </FieldWrapper>
-
-          <Button type="submit" isLoading={isSubmitting} className="mt-1 w-full">
-            Create account
-          </Button>
-        </form>
-
-        <p className="mt-5 text-center text-sm text-[var(--color-ink-muted)]">
-          Already have an account?{" "}
-          <Link to="/login" className="font-medium text-[var(--color-accent)] hover:underline">
-            Sign in
-          </Link>
-        </p>
       </div>
+    </div>
+  );
+}
+
+function Feature({ text }: { text: string }) {
+  return (
+    <div className="flex items-center gap-2 text-sm text-slate-600">
+      <CheckCircle2
+        size={16}
+        className="shrink-0 text-emerald-500"
+      />
+      <span>{text}</span>
     </div>
   );
 }

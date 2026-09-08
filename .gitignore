@@ -1,0 +1,168 @@
+# Logs
+logs
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+lerna-debug.log*
+
+node_modules
+dist
+dist-ssr
+*.local
+
+# Editor directories and files
+.vscode/*
+!.vscode/extensions.json
+.idea
+.DS_Store
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.sw?
+# Python
+__pycache__/
+*.py[cod]
+*.pyo
+
+# Virtual environments
+venv/
+.venv/
+env/
+
+# NLTK downloaded data
+ai/.nltk_data/
+
+# Environment / secrets
+.env
+.env.*
+!.env.example
+
+# Node
+node_modules/
+frontend/node_modules/
+
+# Build output
+dist/
+build/
+frontend/dist/
+
+# Logs
+*.log
+
+# IDE
+.vscode/
+.idea/
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Python test/cache
+.pytest_cache/
+.coverage
+
+# AI generated artifacts - ignore if regenerated during training
+# ai/artifacts/
+# Python
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+
+# Virtual environments
+venv/
+.venv/
+env/
+ENV/
+backend/venv/
+backend/.venv/
+
+# NLTK downloaded data
+ai/.nltk_data/
+
+# Node
+node_modules/
+frontend/node_modules/
+
+# Build files
+dist/
+build/
+frontend/dist/
+
+# Environment files
+.env
+.env.*
+!.env.example
+
+# IDE
+.vscode/
+.idea/
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Logs
+*.log
+
+# Python test/cache
+.pytest_cache/
+.mypy_cache/
+.coverage
+htmlcov/
+
+# Temporary files
+*.tmp
+*.temp
+
+ai/dataset/
+
+ai/dataset/
+
+ai/dataset/
+
+# Python
+__pycache__/
+*.py[cod]
+*.pyo
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+
+# Virtual environments
+venv/
+.venv/
+env/
+
+# Environment / secrets
+.env
+.env.*
+!.env.example
+
+# Node
+node_modules/
+dist/
+build/
+.vite/
+
+# IDE
+.vscode/
+.idea/
+
+# OS
+.DS_Store
+Thumbs.db
+
+# NLTK downloaded data
+.nltk_data/
+ai/.nltk_data/
+
+# Large/generated datasets
+ai/dataset/
+backend/uploads/
+
+# Generated files
+*.log

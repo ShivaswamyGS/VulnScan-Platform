@@ -1,58 +1,131 @@
 @import "tailwindcss";
 
 @theme {
-  /* --- Brand / surface palette --- */
-  --color-canvas: #F8FAFC;
-  --color-surface: #FFFFFF;
-  --color-sidebar: #0F172A;
-  --color-sidebar-hover: #1E293B;
-  --color-border: #E2E8F0;
-  --color-border-strong: #CBD5E1;
+  /* =========================================================
+     BRAND / SURFACE
+  ========================================================= */
 
-  --color-ink: #0F172A;
-  --color-ink-muted: #64748B;
-  --color-ink-faint: #94A3B8;
+  --color-canvas: #f8fafc;
+  --color-surface: #ffffff;
 
-  --color-accent: #2563EB;
-  --color-accent-hover: #1D4ED8;
-  --color-accent-soft: #EFF6FF;
+  --color-sidebar: #0f172a;
+  --color-sidebar-hover: #1e293b;
 
-  /* --- Severity palette: one fixed hue per level, never reused elsewhere --- */
-  --color-critical: #DC2626;
-  --color-critical-soft: #FEF2F2;
-  --color-high: #EA580C;
-  --color-high-soft: #FFF7ED;
-  --color-medium: #D97706;
-  --color-medium-soft: #FFFBEB;
-  --color-low: #0891B2;
-  --color-low-soft: #ECFEFF;
+  --color-border: #e2e8f0;
+  --color-border-strong: #cbd5e1;
+
+  --color-ink: #0f172a;
+  --color-ink-muted: #64748b;
+  --color-ink-faint: #94a3b8;
+
+  --color-accent: #2563eb;
+  --color-accent-hover: #1d4ed8;
+  --color-accent-soft: #eff6ff;
+
+  /* =========================================================
+     SEVERITY
+  ========================================================= */
+
+  --color-critical: #dc2626;
+  --color-critical-soft: #fef2f2;
+
+  --color-high: #ea580c;
+  --color-high-soft: #fff7ed;
+
+  --color-medium: #d97706;
+  --color-medium-soft: #fffbeb;
+
+  --color-low: #0891b2;
+  --color-low-soft: #ecfeff;
 
   --color-success: #059669;
-  --color-success-soft: #ECFDF5;
-  --color-danger: #DC2626;
+  --color-success-soft: #ecfdf5;
 
-  /* --- Type --- */
+  --color-danger: #dc2626;
+
+  /* =========================================================
+     TYPOGRAPHY
+  ========================================================= */
+
   --font-sans: "IBM Plex Sans", ui-sans-serif, system-ui, sans-serif;
+
   --font-mono: "IBM Plex Mono", ui-monospace, monospace;
 
-  /* --- Radius: crisp, not playful --- */
+  /* =========================================================
+     RADIUS
+  ========================================================= */
+
   --radius-sm: 4px;
   --radius-md: 6px;
   --radius-lg: 8px;
 }
 
 @layer base {
-  * {
+  *,
+  ::before,
+  ::after {
     border-color: var(--color-border);
   }
+
+  html {
+    background: var(--color-canvas);
+  }
+
   body {
+    margin: 0;
+    min-width: 320px;
     background-color: var(--color-canvas);
     color: var(--color-ink);
     font-family: var(--font-sans);
     -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
   }
+
+  button,
+  input,
+  textarea,
+  select {
+    font: inherit;
+  }
+
+  button {
+    cursor: pointer;
+  }
+
+  button:disabled {
+    cursor: not-allowed;
+  }
+
+  a {
+    color: inherit;
+    text-decoration: none;
+  }
+
+  ::selection {
+    background: #dbeafe;
+    color: #1e3a8a;
+  }
+
   :focus-visible {
     outline: 2px solid var(--color-accent);
     outline-offset: 2px;
+  }
+
+  ::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+  }
+
+  ::-webkit-scrollbar-track {
+    background: #f1f5f9;
+  }
+
+  ::-webkit-scrollbar-thumb {
+    background: #cbd5e1;
+    border-radius: 999px;
+  }
+
+  ::-webkit-scrollbar-thumb:hover {
+    background: #94a3b8;
   }
 }

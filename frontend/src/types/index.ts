@@ -10,6 +10,18 @@ export interface User {
   created_at: string;
 }
 
+export interface Employee {
+  id: number;
+  full_name: string;
+  email: string;
+  department: string;
+  designation: string;
+  employee_id: string;
+  role: Role;
+  is_active: boolean;
+  created_at: string;
+}
+
 export interface Status {
   id: number;
   name: string;

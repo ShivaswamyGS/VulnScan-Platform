@@ -1,45 +1,250 @@
 import axios from "axios";
 
-export const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || "http://localhost:8000/api/v1";
+/*
+ * =========================================================
+ * API BASE URL
+ * =========================================================
+ */
+
+const API_BASE_URL =
+  import.meta.env.VITE_API_BASE_URL ||
+  "http://127.0.0.1:8000/api/v1";
+
+/*
+ * =========================================================
+ * MAIN API CLIENT
+ * =========================================================
+ */
 
 export const apiClient = axios.create({
   baseURL: API_BASE_URL,
+
+  headers: {
+    "Content-Type": "application/json",
+  },
 });
 
-// Attach the access token to every request, read fresh from storage each
-// time (rather than captured once at app load) so a just-refreshed token
-// is always used.
-apiClient.interceptors.request.use((config) => {
-  const token = localStorage.getItem("access_token");
-  if (token) {
-    config.headers.Authorization = `Bearer ${token}`;
+/*
+ * =========================================================
+ * DETECT COMPANY REQUEST
+ * =========================================================
+ *
+ * Company APIs use company_access_token.
+ *
+ * Normal researcher/admin APIs use access_token.
+ */
+
+function isCompanyRequest(
+  url?: string
+): boolean {
+  if (!url) {
+    return false;
   }
-  return config;
-});
 
-// A 401 anywhere means the session is no longer valid (expired/invalid
-// token) — clear it and let the app's route guard redirect to /login,
-// rather than handling this ad-hoc in every single call site.
-apiClient.interceptors.response.use(
-  (response) => response,
-  (error) => {
-    if (error.response?.status === 401) {
-      localStorage.removeItem("access_token");
-      localStorage.removeItem("refresh_token");
-      if (window.location.pathname !== "/login") {
-        window.location.href = "/login";
+  return (
+    url.startsWith("/company") ||
+    url.includes("/company/") ||
+    url.startsWith("/submissions/company") ||
+    url.includes("/submissions/company/")
+  );
+}
+
+/*
+ * =========================================================
+ * REQUEST INTERCEPTOR
+ * =========================================================
+ */
+
+apiClient.interceptors.request.use(
+  (config) => {
+    const url = config.url || "";
+
+    const companyRequest =
+      isCompanyRequest(url);
+
+      // =========================================================
+// HANDLE FILE UPLOADS
+// =========================================================
+
+if (config.data instanceof FormData) {
+  delete config.headers["Content-Type"];
+}
+
+    /*
+     * COMPANY REQUEST
+     */
+
+    if (companyRequest) {
+      const companyToken =
+        localStorage.getItem(
+          "company_access_token"
+        );
+
+      if (companyToken) {
+        config.headers =
+          config.headers || {};
+
+        config.headers.Authorization =
+          `Bearer ${companyToken}`;
       }
+
+      return config;
     }
+
+    /*
+     * NORMAL USER / RESEARCHER / ADMIN REQUEST
+     */
+
+    const accessToken =
+      localStorage.getItem("access_token");
+
+    if (accessToken) {
+      config.headers =
+        config.headers || {};
+
+      config.headers.Authorization =
+        `Bearer ${accessToken}`;
+    }
+
+    return config;
+  },
+
+  (error) => {
     return Promise.reject(error);
   }
 );
 
-/** Extracts a human-readable message from a FastAPI error response. */
-export function getErrorMessage(error: unknown): string {
-  if (axios.isAxiosError(error)) {
-    const detail = error.response?.data?.detail;
-    if (typeof detail === "string") return detail;
-    if (error.message) return error.message;
+/*
+ * =========================================================
+ * RESPONSE INTERCEPTOR
+ * =========================================================
+ */
+
+apiClient.interceptors.response.use(
+  (response) => {
+    return response;
+  },
+
+  (error) => {
+    const status =
+      error.response?.status;
+
+    const requestUrl =
+      error.config?.url || "";
+
+    const companyRequest =
+      isCompanyRequest(requestUrl);
+
+    /*
+     * COMPANY AUTH FAILURE
+     */
+
+    if (
+      status === 401 &&
+      companyRequest
+    ) {
+      console.error(
+        "Company authentication expired."
+      );
+
+      localStorage.removeItem(
+        "company_access_token"
+      );
+
+      localStorage.removeItem(
+        "company_refresh_token"
+      );
+
+      /*
+       * IMPORTANT:
+       * Do NOT send company users to /login.
+       */
+
+      if (
+        window.location.pathname !==
+        "/company/login"
+      ) {
+        window.location.href =
+          "/company/login";
+      }
+    }
+
+    /*
+     * NORMAL USER AUTH FAILURE
+     */
+
+    else if (
+      status === 401 &&
+      !companyRequest
+    ) {
+      console.error(
+        "Normal user authentication expired."
+      );
+
+      localStorage.removeItem(
+        "access_token"
+      );
+
+      localStorage.removeItem(
+        "refresh_token"
+      );
+
+      localStorage.removeItem(
+        "user"
+      );
+
+      if (
+        window.location.pathname !==
+        "/login"
+      ) {
+        window.location.href =
+          "/login";
+      }
+    }
+
+    return Promise.reject(error);
   }
-  return "Something went wrong. Please try again.";
+);
+
+/*
+ * =========================================================
+ * ERROR MESSAGE HELPER
+ * =========================================================
+ */
+
+export function getErrorMessage(
+  error: unknown
+): string {
+  if (axios.isAxiosError(error)) {
+    const data = error.response?.data;
+
+    if (
+      typeof data === "object" &&
+      data !== null
+    ) {
+      const detail =
+        (data as any).detail;
+
+      if (typeof detail === "string") {
+        return detail;
+      }
+
+      const message =
+        (data as any).message;
+
+      if (typeof message === "string") {
+        return message;
+      }
+    }
+
+    if (error.message) {
+      return error.message;
+    }
+  }
+
+  if (error instanceof Error) {
+    return error.message;
+  }
+
+  return "Something went wrong.";
 }
