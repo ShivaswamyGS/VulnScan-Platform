@@ -246,7 +246,7 @@ export async function getCompanyPrograms(): Promise<
 > {
   const response =
     await companyApiClient.get<BugBountyProgram[]>(
-      "/company/programs"
+      "/company/programs/company"
     );
 
   return response.data;

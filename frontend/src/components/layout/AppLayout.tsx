@@ -105,11 +105,6 @@ const isResearcher =
       icon: Building2,
     },
     {
-      label: "Bug Bounty",
-      path: "/admin/programs",
-      icon: Bug,
-    },
-    {
       label: "Datasets",
       path: "/admin/datasets",
       icon: Database,
@@ -233,7 +228,7 @@ const isResearcher =
 
       localStorage.removeItem("user");
 
-      navigate("/company/login", {
+      navigate("/login", {
         replace: true,
       });
 

@@ -9,13 +9,13 @@ import { Alert } from "../../components/ui/Alert";
 import {
   getCompanyPrograms,
   deleteProgram,
-  type BugBountyProgram,
+  type Program,
 } from "../../api/programs";
 
 import { getErrorMessage } from "../../api/client";
 
 export default function CompanyProgramsPage() {
-  const [programs, setPrograms] = useState<BugBountyProgram[]>([]);
+  const [programs, setPrograms] = useState<Program[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [deletingId, setDeletingId] = useState<number | null>(null);

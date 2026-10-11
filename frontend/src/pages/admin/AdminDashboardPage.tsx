@@ -273,7 +273,19 @@ function SeverityDistribution({ stats }: { stats: DashboardStats }) {
   );
 }
 
-function CriticalVulnerabilities({ stats }: { stats: DashboardStats }) {
+
+function CriticalVulnerabilities({
+  stats,
+}: {
+  stats: DashboardStats;
+}) {
+  // Protect the dashboard when the API omits this optional array.
+  const vulnerabilities = Array.isArray(
+    stats?.critical_vulnerabilities
+  )
+    ? stats.critical_vulnerabilities
+    : [];
+
   return (
     <div className="rounded-xl border border-slate-200 bg-white shadow-sm">
       <div className="flex items-center justify-between border-b border-slate-100 p-6">
@@ -292,17 +304,17 @@ function CriticalVulnerabilities({ stats }: { stats: DashboardStats }) {
         </div>
 
         <span className="rounded-full bg-red-50 px-2 py-1 text-[10px] font-semibold text-red-500">
-          {stats.critical_vulnerabilities.length}
+          {vulnerabilities.length}
         </span>
       </div>
 
       <div>
-        {stats.critical_vulnerabilities.length === 0 ? (
+        {vulnerabilities.length === 0 ? (
           <div className="p-8 text-center text-xs text-slate-400">
             No critical vulnerabilities.
           </div>
         ) : (
-          stats.critical_vulnerabilities.map((report) => (
+          vulnerabilities.map((report) => (
             <div
               key={report.id}
               className="flex items-center justify-between border-b border-slate-100 px-6 py-4 last:border-b-0"
@@ -317,7 +329,9 @@ function CriticalVulnerabilities({ stats }: { stats: DashboardStats }) {
                 </p>
               </div>
 
-              <span className="ml-4 text-slate-300">→</span>
+              <span className="ml-4 text-slate-300">
+                →
+              </span>
             </div>
           ))
         )}
@@ -325,6 +339,7 @@ function CriticalVulnerabilities({ stats }: { stats: DashboardStats }) {
     </div>
   );
 }
+
 
 function RecentReports({ stats }: { stats: DashboardStats }) {
   return (

@@ -102,3 +102,31 @@ export interface ApiErrorBody {
   detail?: string;
   errors?: unknown;
 }
+
+export interface CompanyRecentSubmission {
+  id: number;
+  title: string;
+  vulnerability_type: string;
+  affected_asset: string;
+  severity: string | null;
+  status: string;
+  submitted_at: string;
+  program_id: number;
+}
+
+export interface CompanyDashboardStats {
+  total_reports: number;
+
+  critical_reports: number;
+  high_reports: number;
+  medium_reports: number;
+  low_reports: number;
+
+  open_reports: number;
+  resolved_reports: number;
+
+  severity_distribution: Record<string, number>;
+  status_distribution: Record<string, number>;
+
+  recent_reports: CompanyRecentSubmission[];
+}

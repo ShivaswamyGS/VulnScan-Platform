@@ -14,14 +14,18 @@ import type { DashboardStats } from "../../types";
 
 const emptyStats: DashboardStats = {
   total_reports: 0,
+
   critical_reports: 0,
   high_reports: 0,
   medium_reports: 0,
   low_reports: 0,
+
   open_reports: 0,
   resolved_reports: 0,
+
   severity_distribution: {},
   status_distribution: {},
+
   recent_reports: [],
 };
 
@@ -44,26 +48,84 @@ export default function CompanyAnalyticsPage() {
       setLoading(true);
       setError(null);
 
-      const data =
-        await getCompanyDashboardStats();
+      const data = await getCompanyDashboardStats();
 
-      setStats({
+      /*
+       * IMPORTANT FIX
+       * -------------------------
+       * The backend currently returns the correct severity
+       * values inside severity_distribution:
+       *
+       * {
+       *   critical: 1,
+       *   high: 0,
+       *   medium: 1,
+       *   low: 0
+       * }
+       *
+       * But the top-level *_reports fields may still contain 0.
+       *
+       * Therefore severity_distribution is used as the
+       * source of truth for Critical / High / Medium / Low.
+       */
+
+      const severity =
+        data.severity_distribution ?? {};
+
+      const normalizedStats: DashboardStats = {
         ...emptyStats,
         ...data,
-        recent_reports:
-          data.recent_reports ?? [],
-        severity_distribution:
-          data.severity_distribution ?? {},
+
+        total_reports:
+          data.total_reports ?? 0,
+
+        critical_reports:
+          Number(severity["critical"] ?? 0),
+
+        high_reports:
+          Number(severity["high"] ?? 0),
+
+        medium_reports:
+          Number(severity["medium"] ?? 0),
+
+        low_reports:
+          Number(severity["low"] ?? 0),
+
+        open_reports:
+          data.open_reports ?? 0,
+
+        resolved_reports:
+          data.resolved_reports ?? 0,
+
+        severity_distribution: {
+          critical: Number(severity["critical"] ?? 0),
+          high: Number(severity["high"] ?? 0),
+          medium: Number(severity["medium"] ?? 0),
+          low: Number(severity["low"] ?? 0),
+        },
+
         status_distribution:
           data.status_distribution ?? {},
-      });
+
+        recent_reports:
+          data.recent_reports ?? [],
+      };
+
+      setStats(normalizedStats);
+
+      console.log(
+        "Company Analytics normalized stats:",
+        normalizedStats
+      );
     } catch (err) {
       console.error(
         "Failed to load analytics:",
         err
       );
 
-      setError(getErrorMessage(err));
+      setError(
+        getErrorMessage(err)
+      );
     } finally {
       setLoading(false);
     }
@@ -79,7 +141,9 @@ export default function CompanyAnalyticsPage() {
     value: number,
     total: number
   ) {
-    if (total === 0) return 0;
+    if (total === 0) {
+      return 0;
+    }
 
     return Math.round(
       (value / total) * 100
@@ -90,15 +154,21 @@ export default function CompanyAnalyticsPage() {
     <CompanyLayout title="Analytics">
 
       {loading ? (
+
         <div className="rounded-xl bg-white p-10 text-center text-gray-500 shadow">
           Loading analytics...
         </div>
+
       ) : (
+
         <div className="space-y-6">
 
-          {/* Header */}
+          {/* =====================================================
+              HEADER
+          ===================================================== */}
 
           <div>
+
             <h1 className="text-2xl font-bold text-gray-900">
               Vulnerability Analytics
             </h1>
@@ -106,19 +176,30 @@ export default function CompanyAnalyticsPage() {
             <p className="mt-1 text-sm text-gray-500">
               Security insights from reports submitted by your employees
             </p>
+
           </div>
 
-          {/* Error */}
+
+          {/* =====================================================
+              ERROR
+          ===================================================== */}
 
           {error && (
+
             <div className="rounded-lg border border-red-200 bg-red-50 p-4 text-sm text-red-700">
               {error}
             </div>
+
           )}
 
-          {/* Overview */}
+
+          {/* =====================================================
+              OVERVIEW CARDS
+          ===================================================== */}
 
           <div className="grid grid-cols-1 gap-5 md:grid-cols-2 xl:grid-cols-4">
+
+            {/* TOTAL */}
 
             <div className="rounded-xl bg-white p-5 shadow-sm">
 
@@ -141,6 +222,9 @@ export default function CompanyAnalyticsPage() {
 
             </div>
 
+
+            {/* OPEN */}
+
             <div className="rounded-xl bg-white p-5 shadow-sm">
 
               <div className="flex items-center gap-3">
@@ -162,6 +246,9 @@ export default function CompanyAnalyticsPage() {
 
             </div>
 
+
+            {/* RESOLVED */}
+
             <div className="rounded-xl bg-white p-5 shadow-sm">
 
               <div className="flex items-center gap-3">
@@ -182,6 +269,9 @@ export default function CompanyAnalyticsPage() {
               </p>
 
             </div>
+
+
+            {/* CRITICAL */}
 
             <div className="rounded-xl bg-white p-5 shadow-sm">
 
@@ -206,7 +296,10 @@ export default function CompanyAnalyticsPage() {
 
           </div>
 
-          {/* Severity Distribution */}
+
+          {/* =====================================================
+              SEVERITY DISTRIBUTION
+          ===================================================== */}
 
           <div className="rounded-xl bg-white p-6 shadow">
 
@@ -222,9 +315,10 @@ export default function CompanyAnalyticsPage() {
 
             </div>
 
+
             <div className="space-y-5">
 
-              {/* Critical */}
+              {/* CRITICAL */}
 
               <SeverityBar
                 label="Critical"
@@ -233,7 +327,8 @@ export default function CompanyAnalyticsPage() {
                 className="bg-red-500"
               />
 
-              {/* High */}
+
+              {/* HIGH */}
 
               <SeverityBar
                 label="High"
@@ -242,7 +337,8 @@ export default function CompanyAnalyticsPage() {
                 className="bg-orange-500"
               />
 
-              {/* Medium */}
+
+              {/* MEDIUM */}
 
               <SeverityBar
                 label="Medium"
@@ -251,7 +347,8 @@ export default function CompanyAnalyticsPage() {
                 className="bg-yellow-500"
               />
 
-              {/* Low */}
+
+              {/* LOW */}
 
               <SeverityBar
                 label="Low"
@@ -264,11 +361,17 @@ export default function CompanyAnalyticsPage() {
 
           </div>
 
-          {/* Status + Severity */}
+
+          {/* =====================================================
+              STATUS + SEVERITY SUMMARY
+          ===================================================== */}
 
           <div className="grid grid-cols-1 gap-6 lg:grid-cols-2">
 
-            {/* Status */}
+
+            {/* =================================================
+                REPORT STATUS
+            ================================================= */}
 
             <div className="rounded-xl bg-white p-6 shadow">
 
@@ -279,6 +382,7 @@ export default function CompanyAnalyticsPage() {
               <p className="mt-1 text-sm text-gray-500">
                 Current lifecycle status of reports
               </p>
+
 
               <div className="mt-6 space-y-4">
 
@@ -305,6 +409,7 @@ export default function CompanyAnalyticsPage() {
                   )
                 )}
 
+
                 {Object.keys(
                   stats.status_distribution
                 ).length === 0 && (
@@ -319,7 +424,10 @@ export default function CompanyAnalyticsPage() {
 
             </div>
 
-            {/* Severity Summary */}
+
+            {/* =================================================
+                SEVERITY SUMMARY
+            ================================================= */}
 
             <div className="rounded-xl bg-white p-6 shadow">
 
@@ -330,6 +438,7 @@ export default function CompanyAnalyticsPage() {
               <p className="mt-1 text-sm text-gray-500">
                 Percentage of reports by severity
               </p>
+
 
               <div className="mt-6 space-y-4">
 
@@ -342,6 +451,7 @@ export default function CompanyAnalyticsPage() {
                   )}
                 />
 
+
                 <SummaryRow
                   label="High"
                   value={stats.high_reports}
@@ -351,6 +461,7 @@ export default function CompanyAnalyticsPage() {
                   )}
                 />
 
+
                 <SummaryRow
                   label="Medium"
                   value={stats.medium_reports}
@@ -359,6 +470,7 @@ export default function CompanyAnalyticsPage() {
                     totalSeverity
                   )}
                 />
+
 
                 <SummaryRow
                   label="Low"
@@ -376,6 +488,7 @@ export default function CompanyAnalyticsPage() {
           </div>
 
         </div>
+
       )}
 
     </CompanyLayout>
@@ -383,9 +496,9 @@ export default function CompanyAnalyticsPage() {
 }
 
 
-/* ================================
-   Severity Bar
-================================ */
+/* ============================================================
+   SEVERITY BAR
+============================================================ */
 
 interface SeverityBarProps {
   label: string;
@@ -400,6 +513,7 @@ function SeverityBar({
   total,
   className,
 }: SeverityBarProps) {
+
   const percent =
     total === 0
       ? 0
@@ -408,6 +522,7 @@ function SeverityBar({
         );
 
   return (
+
     <div>
 
       <div className="mb-2 flex justify-between text-sm">
@@ -421,6 +536,7 @@ function SeverityBar({
         </span>
 
       </div>
+
 
       <div className="h-3 overflow-hidden rounded-full bg-gray-100">
 
@@ -438,9 +554,9 @@ function SeverityBar({
 }
 
 
-/* ================================
-   Summary Row
-================================ */
+/* ============================================================
+   SUMMARY ROW
+============================================================ */
 
 interface SummaryRowProps {
   label: string;
@@ -453,10 +569,13 @@ function SummaryRow({
   value,
   percentage,
 }: SummaryRowProps) {
+
   return (
+
     <div className="flex items-center justify-between rounded-lg border p-4">
 
       <div>
+
         <p className="font-medium">
           {label}
         </p>
@@ -464,6 +583,7 @@ function SummaryRow({
         <p className="text-xs text-gray-500">
           {percentage}% of reports
         </p>
+
       </div>
 
       <span className="text-xl font-bold">
@@ -471,5 +591,6 @@ function SummaryRow({
       </span>
 
     </div>
+
   );
 }

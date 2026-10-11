@@ -175,7 +175,7 @@ export default function CompanyTopbar({
       "company_refresh_token"
     );
 
-    navigate("/company/login", {
+    navigate("/login", {
       replace: true,
     });
   }

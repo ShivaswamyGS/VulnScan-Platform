@@ -3,7 +3,7 @@ import { ArrowLeft, CheckCircle2, Plus, Shield } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 
 import CompanyLayout from "../../components/company/CompanyLayout";
-import { createProgram } from "../../api/programs";
+import { createCompanyProgram } from "../../api/company";
 import { getErrorMessage } from "../../api/client";
 
 export default function CreateProgramPage() {
@@ -102,7 +102,7 @@ export default function CreateProgramPage() {
         is_active: form.is_active,
       };
 
-      const created = await createProgram(payload);
+      const created = await createCompanyProgram(payload);
 
       navigate(
         `/company/programs/${created.id}`,

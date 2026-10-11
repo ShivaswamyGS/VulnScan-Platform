@@ -21,6 +21,7 @@ export interface SubmissionUpdate {
   severity?: string | null;
   bounty_amount?: number | null;
   reviewer_comment?: string | null;
+  duplicate_of_id?: number | null;
 }
 
 export interface VulnerabilitySubmission {

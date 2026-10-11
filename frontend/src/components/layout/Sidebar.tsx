@@ -51,11 +51,6 @@ const adminNavigation: NavigationItem[] = [
     icon: FileSearch,
   },
   {
-    to: "/researcher/programs",
-    label: "Bug Bounty",
-    icon: Bug,
-  },
-  {
     to: "/admin/datasets",
     label: "Datasets",
     icon: Database,

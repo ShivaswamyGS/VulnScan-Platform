@@ -72,8 +72,6 @@ import CompanyDashboardPage from "./pages/company/CompanyDashboardPage";
 // COMPANY PROFILE / EMPLOYEES
 // ============================================================
 
-import { EmployeeListPage } from "./pages/employees/EmployeeListPage";
-
 import CompanyProfilePage from "./pages/company/CompanyProfilePage";
 import CompanySettingsPage from "./pages/company/CompanySettingsPage";
 
@@ -81,8 +79,6 @@ import CompanySettingsPage from "./pages/company/CompanySettingsPage";
 // COMPANY PROJECTS
 // ============================================================
 
-import ProjectsPage from "./pages/company/ProjectsPage";
-import ProjectDetailsPage from "./pages/company/ProjectDetailsPage";
 
 // ============================================================
 // COMPANY ASSETS
@@ -108,7 +104,7 @@ import CompanyAnalyticsPage from "./pages/company/CompanyAnalyticsPage";
 // COMPANY PROGRAMS
 // ============================================================
 
-import CompanyProgramsPage from "./pages/company/ProgramsPage";
+import CompanyProgramsPage from "./pages/company/CompanyProgramsPage";
 import CreateProgramPage from "./pages/company/CreateProgramPage";
 import CompanyProgramDetailsPage from "./pages/company/CompanyProgramDetailsPage";
 import CompanyProgramEditPage from "./pages/company/CompanyProgramEditPage";
@@ -239,36 +235,6 @@ function AppRoutes() {
           COMPANY EMPLOYEES
       ===================================================== */}
 
-      <Route
-        path="/company/employees"
-        element={
-          <CompanyProtectedRoute>
-            <EmployeeListPage />
-          </CompanyProtectedRoute>
-        }
-      />
-
-      {/* =====================================================
-          COMPANY PROJECTS
-      ===================================================== */}
-
-      <Route
-        path="/company/projects"
-        element={
-          <CompanyProtectedRoute>
-            <ProjectsPage />
-          </CompanyProtectedRoute>
-        }
-      />
-
-      <Route
-        path="/company/projects/:id"
-        element={
-          <CompanyProtectedRoute>
-            <ProjectDetailsPage />
-          </CompanyProtectedRoute>
-        }
-      />
 
       {/* =====================================================
           COMPANY ASSETS

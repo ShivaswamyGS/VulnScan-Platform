@@ -40,31 +40,7 @@ const sections = [
       },
     ],
   },
-  {
-    title: "Management",
-    links: [
-      {
-        to: "/company/employees",
-        label: "Employees",
-        icon: Users,
-      },
-      {
-        to: "/company/projects",
-        label: "Projects",
-        icon: FolderKanban,
-      },
-      {
-        to: "/company/assets",
-        label: "Assets",
-        icon: Monitor,
-      },
-      {
-        to: "/company/programs",
-        label: "Bug Bounty Programs",
-        icon: Bug,
-      },
-    ],
-  },
+ 
   {
     title: "Organization",
     links: [

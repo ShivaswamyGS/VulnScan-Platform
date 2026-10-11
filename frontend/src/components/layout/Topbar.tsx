@@ -187,7 +187,7 @@ export function Topbar({ title }: TopbarProps) {
       localStorage.removeItem("refresh_token");
       localStorage.removeItem("user");
 
-      navigate("/company/login", {
+      navigate("/login", {
         replace: true,
       });
 
