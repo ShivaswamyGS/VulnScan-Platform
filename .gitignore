@@ -166,3 +166,12 @@ backend/uploads/
 
 # Generated files
 *.log
+
+# Backend local files - never commit
+backend/.env
+backend/.venv/
+backend/venv/
+backend/.pytest_cache/
+backend/uploads/
+backend/**/__pycache__/
+backend/install_log.txt
