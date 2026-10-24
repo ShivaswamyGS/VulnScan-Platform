@@ -12,14 +12,6 @@ interface Props {
   project?: any;
 }
 
-interface Project {
-  id: number;
-  name: string;
-  description: string;
-  repository_url?: string;
-  status: string;
-}
-
 export default function ProjectModal({
   open,
   onClose,

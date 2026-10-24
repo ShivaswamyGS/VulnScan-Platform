@@ -10,9 +10,9 @@ import CompanyLayout from "../../components/company/CompanyLayout";
 import { getCompanyDashboardStats } from "../../api/companyDashboard";
 import { getErrorMessage } from "../../api/client";
 
-import type { DashboardStats } from "../../types";
+import type { CompanyDashboardStats } from "../../types";
 
-const emptyStats: DashboardStats = {
+const emptyStats: CompanyDashboardStats = {
   total_reports: 0,
 
   critical_reports: 0,
@@ -31,7 +31,7 @@ const emptyStats: DashboardStats = {
 
 export default function CompanyAnalyticsPage() {
   const [stats, setStats] =
-    useState<DashboardStats>(emptyStats);
+    useState<CompanyDashboardStats>(emptyStats);
 
   const [loading, setLoading] =
     useState(true);
@@ -72,7 +72,7 @@ export default function CompanyAnalyticsPage() {
       const severity =
         data.severity_distribution ?? {};
 
-      const normalizedStats: DashboardStats = {
+      const normalizedStats: CompanyDashboardStats = {
         ...emptyStats,
         ...data,
 

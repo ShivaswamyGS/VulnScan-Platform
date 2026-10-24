@@ -631,9 +631,7 @@ export default function CompanySettingsPage() {
                   </div>
 
                   <p className="mt-2 text-sm font-semibold text-slate-800">
-                    {new Date(
-                      company.created_at
-                    ).toLocaleDateString()}
+                    {company.created_at ? new Date(company.created_at).toLocaleDateString() : "Not available"}
                   </p>
                 </div>
 

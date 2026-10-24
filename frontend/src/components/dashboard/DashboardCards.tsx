@@ -22,7 +22,6 @@ import {
 
 import { getErrorMessage } from "../../api/client";
 
-import DashboardCards from "../../components/dashboard/DashboardCards";
 
 import DashboardCharts from "../../components/dashboard/DashboardCharts";
 
@@ -476,7 +475,24 @@ export default function AdminDashboardPage() {
             STATISTICS
         ===================================================== */}
 
-        <DashboardCards stats={stats} />
+        <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
+  <div className="rounded-xl border border-slate-200 bg-white p-4">
+    <p className="text-sm text-slate-500">Total Reports</p>
+    <p className="mt-2 text-2xl font-semibold">{stats.total_reports}</p>
+  </div>
+  <div className="rounded-xl border border-slate-200 bg-white p-4">
+    <p className="text-sm text-slate-500">Critical Reports</p>
+    <p className="mt-2 text-2xl font-semibold">{stats.critical_reports}</p>
+  </div>
+  <div className="rounded-xl border border-slate-200 bg-white p-4">
+    <p className="text-sm text-slate-500">Open Reports</p>
+    <p className="mt-2 text-2xl font-semibold">{stats.open_reports}</p>
+  </div>
+  <div className="rounded-xl border border-slate-200 bg-white p-4">
+    <p className="text-sm text-slate-500">Resolved Reports</p>
+    <p className="mt-2 text-2xl font-semibold">{stats.resolved_reports}</p>
+  </div>
+</div>
 
 
         {/* =====================================================

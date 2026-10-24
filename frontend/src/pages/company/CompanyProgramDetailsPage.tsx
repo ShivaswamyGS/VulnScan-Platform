@@ -5,7 +5,7 @@ import {
   useParams,
 } from "react-router-dom";
 
-import { Eye, ArrowLeft, Pencil } from "lucide-react";
+import { ArrowLeft, Pencil } from "lucide-react";
 
 import CompanyLayout from "../../components/company/CompanyLayout";
 

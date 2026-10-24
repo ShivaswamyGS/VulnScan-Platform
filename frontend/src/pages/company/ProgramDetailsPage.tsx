@@ -1,3 +1,4 @@
+import type { Program } from "../../api/programs";
 import { useEffect, useState } from "react";
 import { Link, useParams } from "react-router-dom";
 import {
@@ -17,7 +18,6 @@ import { Alert } from "../../components/ui/Alert";
 
 import {
   getProgramById,
-  type BugBountyProgram,
 } from "../../api/programs";
 
 import { getErrorMessage } from "../../api/client";
@@ -57,7 +57,7 @@ export default function ProgramDetailsPage() {
   const { id } = useParams<{ id: string }>();
 
   const [program, setProgram] =
-    useState<BugBountyProgram | null>(null);
+    useState<Program | null>(null);
 
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);

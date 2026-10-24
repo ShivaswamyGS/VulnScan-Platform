@@ -438,7 +438,7 @@ export default function CompanyProfilePage() {
                         <Mail className="pointer-events-none absolute left-4 top-1/2 h-4 w-4 -translate-y-1/2 text-slate-400" />
 
                         <input
-                          value={company.email}
+                          value={company.email ?? ""}
                           disabled
                           className="w-full rounded-xl border border-slate-200 bg-slate-50 py-3 pl-11 pr-4 text-sm text-slate-500"
                         />

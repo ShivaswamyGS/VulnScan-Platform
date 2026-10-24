@@ -34,7 +34,7 @@ import {
 } from "../../api/reports";
 
 import { getErrorMessage } from "../../api/client";
-import type { Report } from "../../types";
+import type { Report, Severity } from "../../types";
 import { useAuth } from "../../context/AuthContext";
 
 import {
@@ -587,10 +587,8 @@ export function ReportDetailPage() {
 
                     <div className="flex flex-wrap items-center gap-4">
                       <SeverityBadge
-                        severity={
-                          predictionHistory[0]
-                            .predicted_severity
-                        }
+                        severity={predictionHistory[0]
+                            .predicted_severity as Severity}
                         confidence={
                           predictionHistory[0]
                             .confidence_score
@@ -671,9 +669,7 @@ export function ReportDetailPage() {
                                   >
                                     <td className="px-4 py-3">
                                       <SeverityBadge
-                                        severity={
-                                          prediction.predicted_severity
-                                        }
+                                        severity={prediction.predicted_severity as Severity}
                                         confidence={
                                           prediction.confidence_score
                                         }

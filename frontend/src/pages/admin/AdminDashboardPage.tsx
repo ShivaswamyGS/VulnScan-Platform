@@ -204,7 +204,6 @@ function SeverityDistribution({ stats }: { stats: DashboardStats }) {
   const criticalPercentage = (stats.critical_reports / total) * 100;
   const highPercentage = (stats.high_reports / total) * 100;
   const mediumPercentage = (stats.medium_reports / total) * 100;
-  const lowPercentage = (stats.low_reports / total) * 100;
 
   return (
     <div className="rounded-xl border border-slate-200 bg-white p-6 shadow-sm">

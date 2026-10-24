@@ -3,7 +3,6 @@ import React, { useState } from "react";
 import {
   FileText,
   LogOut,
-  Menu,
   Send,
   Shield,
   Target,
@@ -15,7 +14,6 @@ import {
   BrainCircuit,
   ScrollText,
   Settings,
-  Bug,
 } from "lucide-react";
 
 import {
@@ -73,11 +71,7 @@ const isAdmin =
     pathname === "/dashboard" ||
     pathname.startsWith("/admin/")
   );
-
-const isResearcher =
-  !isAdmin && !isCompany;
-
-  /*
+/*
    * =========================================================
    * ADMIN NAVIGATION
    * =========================================================

@@ -1,4 +1,5 @@
-import { ChangeEvent, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
+import type { ChangeEvent } from "react";
 
 import { AppLayout } from "../../components/layout/AppLayout";
 import { Card } from "../../components/ui/Card";

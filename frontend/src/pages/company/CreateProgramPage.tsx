@@ -1,9 +1,11 @@
-import { FormEvent, useState } from "react";
-import { ArrowLeft, CheckCircle2, Plus, Shield } from "lucide-react";
+import { useState } from "react";
+import type { FormEvent } from "react";
+import { ArrowLeft, Plus, Shield } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 
 import CompanyLayout from "../../components/company/CompanyLayout";
 import { createCompanyProgram } from "../../api/company";
+import type { ProgramStatus, ProgramVisibility } from "../../api/company";
 import { getErrorMessage } from "../../api/client";
 
 export default function CreateProgramPage() {
@@ -95,8 +97,8 @@ export default function CreateProgramPage() {
               form.end_date
             ).toISOString()
           : null,
-        status: form.status,
-        visibility: form.visibility,
+        status: form.status as ProgramStatus,
+        visibility: form.visibility as ProgramVisibility,
         attachments:
           form.attachments.trim() || null,
         is_active: form.is_active,
